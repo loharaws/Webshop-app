@@ -1,20 +1,20 @@
-# Base image
-FROM clojure:temurin-17-lein
+```dockerfile
+FROM clojure:temurin-17-lein AS builder
 
-# Working directory
 WORKDIR /app
 
-# Copy project files
 COPY . .
 
-# Download dependencies
 RUN lein deps
-
-# Build uberjar
 RUN lein uberjar
 
-# Expose application port
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+COPY --from=builder /app/target/uberjar/*-standalone.jar app.jar
+
 EXPOSE 3000
 
-# Run application
-CMD ["java", "-jar", "target/uberjar/webshop-standalone.jar"]
+CMD ["java", "-jar", "app.jar"]
+```
