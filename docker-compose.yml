@@ -1,11 +1,10 @@
-
+```yaml
 version: '3.8'
 
 services:
 
   clojure-app:
     build: .
-
     container_name: clojure-app
 
     ports:
@@ -15,8 +14,8 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: clojure
-      DB_USER:  clojure  
-      DB_PASSWORD:  clojure  
+      DB_USER: clojure
+      DB_PASSWORD: clojure
 
     depends_on:
       - postgres
@@ -25,13 +24,12 @@ services:
 
   postgres:
     image: postgres:16
-
     container_name: postgres-db
 
     environment:
       POSTGRES_DB: clojure
-      POSTGRES_USER:  clojure  
-      POSTGRES_PASSWORD:  clojure  
+      POSTGRES_USER: clojure
+      POSTGRES_PASSWORD: clojure
 
     ports:
       - "5432:5432"
