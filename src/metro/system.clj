@@ -14,7 +14,7 @@
    ;; Define server type
    ::http/type :jetty
    ;; Is it docker or local?
-   ::http/host (or (System/getenv "WEB_HOST") "localhost")
+   ::http/host (or (System/getenv "WEB_HOST") "0.0.0.0")
    ;; Port to listen on
    ::http/port 8080
    ;; Path of public resources
