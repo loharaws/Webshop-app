@@ -12,9 +12,9 @@ services:
       - "3000:3000"
 
     environment:
-      DB_HOST: db
+      DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: webshop
+      DB_NAME: clojure
       DB_USER:  clojure  
       DB_PASSWORD:  clojure  
 
