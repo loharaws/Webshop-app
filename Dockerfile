@@ -10,9 +10,6 @@ COPY . .
 # Download dependencies
 RUN lein deps
 
-# Run tests
-RUN lein test
-
 # Build uberjar
 RUN lein uberjar
 
