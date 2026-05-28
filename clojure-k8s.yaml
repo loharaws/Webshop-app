@@ -1,0 +1,135 @@
+
+# =========================================
+# PostgreSQL Deployment
+# =========================================
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: postgres-deployment
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: postgres
+
+  template:
+    metadata:
+      labels:
+        app: postgres
+
+    spec:
+      containers:
+        - name: postgres
+
+          image: postgres:16
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_DB
+              value: clojure
+
+            - name: POSTGRES_USER
+              value: clojure
+
+            - name: POSTGRES_PASSWORD
+              value: clojure
+
+---
+# =========================================
+# PostgreSQL Service
+# =========================================
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: postgres
+
+spec:
+  selector:
+    app: postgres
+
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+---
+# =========================================
+# Clojure App Deployment
+# =========================================
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: clojure-app-deployment
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: clojure-app
+
+  template:
+    metadata:
+      labels:
+        app: clojure-app
+
+    spec:
+      containers:
+        - name: clojure-app
+
+          image: yashwantlohar/clojure-app:latest
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: DB_HOST
+              value: postgres
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_NAME
+              value: clojure
+
+            - name: DB_USER
+              value: clojure
+
+            - name: DB_PASSWORD
+              value: clojure
+
+            - name: WEB_HOST
+              value: "0.0.0.0"
+
+          dependsOn:
+            - postgres
+
+---
+# =========================================
+# Clojure App Service
+# =========================================
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: clojure-app-service
+
+spec:
+  type: NodePort
+
+  selector:
+    app: clojure-app
+
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080
