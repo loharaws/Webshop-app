@@ -1,9 +1,23 @@
-FROM clojure:openjdk-11-lein-slim-buster AS build
-COPY . /usr/src/app
-WORKDIR /usr/src/app
+# Base image
+FROM clojure:temurin-17-lein
+
+# Working directory
+WORKDIR /app
+
+# Copy project files
+COPY . .
+
+# Download dependencies
+RUN lein deps
+
+# Run tests
+RUN lein test
+
+# Build uberjar
 RUN lein uberjar
 
-FROM openjdk:11-jre-slim
-WORKDIR /usr/src/app
-COPY --from=build /usr/src/app/target/uberjar/*-standalone.jar ./app.jar
-CMD ["java", "-jar", "app.jar"]
+# Expose application port
+EXPOSE 3000
+
+# Run application
+CMD ["java", "-jar", "target/uberjar/webshop-standalone.jar"]
