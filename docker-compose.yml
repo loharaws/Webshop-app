@@ -1,25 +1,46 @@
-version: "3.4"
+```yaml
+version: '3.8'
+
 services:
 
-  db:
-    image: postgres:12-alpine
-    restart: always
-    expose:
-      - 5432
-    environment:
-      - "POSTGRES_PASSWORD=clojure"
-      - "POSTGRES_USER=clojure"
-      - "POSTGRES_DB=clojure"
+  clojure-app:
+    build: .
 
-  clj:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - "DB_HOST=db"
-      - "WEB_HOST=0.0.0.0"
+    container_name: clojure-app
+
     ports:
-      - "8080:8080"
-    command: java -jar app.jar
+      - "3000:3000"
+
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: webshop
+      DB_USER:  clojure  
+      DB_PASSWORD:  clojure  
+
     depends_on:
-      - db
+      - postgres
+
+    restart: always
+
+  postgres:
+    image: postgres:16
+
+    container_name: postgres-db
+
+    environment:
+      POSTGRES_DB: clojure
+      POSTGRES_USER:  clojure  
+      POSTGRES_PASSWORD:  clojure  
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    restart: always
+
+volumes:
+  postgres-data:
+```
