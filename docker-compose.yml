@@ -11,11 +11,11 @@ services:
       - "3000:3000"
 
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: clojure
-      DB_USER: clojure
-      DB_PASSWORD: clojure
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      DB_NAME: "clojure"
+      DB_USER: "clojure"
+      DB_PASSWORD: "clojure"
 
     depends_on:
       - postgres
@@ -27,9 +27,9 @@ services:
     container_name: postgres-db
 
     environment:
-      POSTGRES_DB: clojure
-      POSTGRES_USER: clojure
-      POSTGRES_PASSWORD: clojure
+      POSTGRES_DB: "clojure"
+      POSTGRES_USER: "clojure"
+      POSTGRES_PASSWORD: "clojure"
 
     ports:
       - "5432:5432"
